@@ -1,0 +1,9 @@
+{
+  "timeoutMs": 45000,
+  "pageWaitMs": 7000,
+  "minimumIntervalSeconds": 30,
+  "parallelChecks": true,
+  "historyLimit": 500,
+  "publicCacheSeconds": 5,
+  "pollingSeconds": 15
+}

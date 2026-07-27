@@ -1,0 +1,114 @@
+{
+  "siteTitle": "MONITOR TICKET BTS",
+  "siteSubtitle": "BTS WORLD TOUR ARIRANG - SÃO PAULO",
+  "siteDescription": "",
+  "coverImage": "",
+  "headerAlertText": "Ativar alerta",
+  "showSectionTitle": "DIAS DE SHOWS",
+  "infoSectionTitle": "INFORMAÇÕES IMPORTANTES",
+  "footerText": "BTS Ticket Monitor Brasil",
+  "instagramUrl": "https://instagram.com/",
+  "twitterUrl": "https://x.com/",
+  "telegramUrl": "https://t.me/monitorticketmbts",
+  "showSocialButtons": true,
+  "checkIntervalSeconds": 60,
+  "monitorEnabled": true,
+  "visualAlertEnabled": true,
+  "soundAlertEnabled": true,
+  "browserNotificationEnabled": true,
+  "sectorDetailsEnabled": true,
+  "manualAlert": {
+    "enabled": false,
+    "message": ""
+  },
+  "shows": [
+    {
+      "id": "28",
+      "day": "QUARTA-FEIRA",
+      "date": "28 DE OUTUBRO",
+      "url": "https://www.ticketmaster.com.br/event/venda-geral-bts-world-tour-arirang-28-10",
+      "buttonText": "ABRIR SITE OFICIAL",
+      "image": "",
+      "extraLinkText": "",
+      "extraLinkUrl": "",
+      "enabled": true,
+      "alertsEnabled": true
+    },
+    {
+      "id": "30",
+      "day": "SEXTA-FEIRA",
+      "date": "30 DE OUTUBRO",
+      "url": "https://www.ticketmaster.com.br/event/venda-geral-bts-world-tour-arirang-30-10",
+      "buttonText": "ABRIR SITE OFICIAL",
+      "image": "",
+      "extraLinkText": "",
+      "extraLinkUrl": "",
+      "enabled": true,
+      "alertsEnabled": true
+    },
+    {
+      "id": "31",
+      "day": "SÁBADO",
+      "date": "31 DE OUTUBRO",
+      "url": "https://www.ticketmaster.com.br/event/venda-geral-bts-world-tour-arirang-31-10",
+      "buttonText": "ABRIR SITE OFICIAL",
+      "image": "",
+      "extraLinkText": "",
+      "extraLinkUrl": "",
+      "enabled": true,
+      "alertsEnabled": true
+    }
+  ],
+  "infoCards": [
+    {
+      "title": "LINKS OFICIAIS",
+      "text": "Use somente as páginas oficiais da Ticketmaster para consultar e comprar ingressos.",
+      "image": "",
+      "linkText": "VER DIAS DE SHOW",
+      "linkUrl": "#shows"
+    },
+    {
+      "title": "ALERTA DE SOM",
+      "text": "Ative o áudio no cabeçalho para ouvir o aviso quando houver disponibilidade.",
+      "image": "",
+      "linkText": "",
+      "linkUrl": ""
+    },
+    {
+      "title": "ATUALIZAÇÃO AUTOMÁTICA",
+      "text": "O servidor verifica as páginas oficiais automaticamente no intervalo configurado.",
+      "image": "",
+      "linkText": "",
+      "linkUrl": ""
+    },
+    {
+      "title": "STATUS DOS INGRESSOS",
+      "text": "Esgotado aparece em vermelho. Disponível aparece em verde e libera o alerta.",
+      "image": "",
+      "linkText": "",
+      "linkUrl": ""
+    },
+    {
+      "title": "CANAL TELEGRAM",
+      "text": "Acesse o canal do projeto para acompanhar avisos e atualizações importantes.",
+      "image": "",
+      "linkText": "ABRIR TELEGRAM",
+      "linkUrl": "https://t.me/monitorticketmbts"
+    },
+    {
+      "title": "SEGURANÇA",
+      "text": "O monitor não solicita dados pessoais, não compra ingressos e não realiza pagamentos.",
+      "image": "",
+      "linkText": "",
+      "linkUrl": ""
+    },
+    {
+      "title": "FILA E RESERVA",
+      "text": "O sistema não entra na fila, não reserva lugares e não contorna proteções da Ticketmaster.",
+      "image": "",
+      "linkText": "",
+      "linkUrl": ""
+    }
+  ],
+  "pollingSeconds": 15
+}

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Painel administrativo</title>
+  <link rel="stylesheet" href="./admin.css?v=alto-trafego-v4">
+</head>
+<body>
+  <main class="admin">
+    <a class="back" href="./index.html">← Voltar ao site</a>
+    <h1>Painel administrativo</h1>
+    <p class="muted">Edite o cabeçalho, a capa, os shows, as informações e os alertas.</p>
+
+    <div id="previewNotice" class="notice" hidden>
+      <strong>Pré-visualização local</strong>
+      <span>As alterações ficam salvas neste navegador. O monitor real funciona no Render.</span>
+    </div>
+
+    <section id="loginBox" class="panel login">
+      <label>Senha</label>
+      <input id="password" type="password" placeholder="Digite a senha">
+      <button id="login" type="button">Entrar</button>
+      <small>No Live Server, use <b>admin123</b>.</small>
+    </section>
+
+    <div id="dashboard" hidden>
+      <section class="panel">
+        <h2>Teste e alertas</h2>
+        <div class="button-row">
+          <button id="checkNow" type="button">Verificar Ticketmaster agora</button>
+          <button id="testSound" type="button">Ouvir som de alerta</button>
+          <button id="loadDiagnostics" type="button" class="gray">Atualizar diagnóstico</button>
+        </div>
+
+        <label>Mensagem do alerta manual</label>
+        <textarea id="manualAlertMessage"
+          placeholder="Digite o aviso que deverá aparecer no site"></textarea>
+
+        <div class="button-row">
+          <button id="publishManualAlert" type="button">
+            Liberar alerta no site
+          </button>
+          <button id="clearPublishedAlert" type="button" class="gray">
+            Retirar alerta do site
+          </button>
+        </div>
+
+        <div id="diagnosticSummary" class="diagnostic-summary"></div>
+      </section>
+
+      <form id="configForm">
+        <section class="panel">
+          <h2>Cabeçalho e redes sociais</h2>
+          <label>Texto do botão de alerta</label>
+          <input id="headerAlertText">
+          <label class="toggle"><input id="showSocialButtons" type="checkbox"> Mostrar botões das redes sociais</label>
+          <div class="form-grid">
+            <div><label>Twitter / X</label><input id="twitterUrl"></div>
+            <div><label>Instagram</label><input id="instagramUrl"></div>
+          </div>
+          <label>Canal do Telegram</label>
+          <input id="telegramUrl">
+        </section>
+
+        <section class="panel">
+          <h2>Capa e títulos</h2>
+          <div class="form-grid">
+            <div><label>Mini título</label><input id="siteSubtitle"></div>
+            <div><label>Título principal</label><input id="siteTitle"></div>
+          </div>
+          <label>Descrição opcional</label>
+          <textarea id="siteDescription"></textarea>
+          <label>Foto da capa</label>
+          <input id="coverUpload" type="file" accept="image/*">
+          <div id="coverPreview" class="image-preview"></div>
+          <button id="removeCover" type="button" class="gray">Remover capa</button>
+        </section>
+
+        <section class="panel">
+          <h2>Monitor e notificações</h2>
+          <div class="toggles">
+            <label><input id="monitorEnabled" type="checkbox"> Monitor ligado</label>
+            <label><input id="visualAlertEnabled" type="checkbox"> Aviso visual</label>
+            <label><input id="soundAlertEnabled" type="checkbox"> Alerta sonoro</label>
+            <label><input id="browserNotificationEnabled" type="checkbox"> Notificação do navegador</label>
+            <label><input id="sectorDetailsEnabled" type="checkbox"> Mostrar setor, tipo e preço</label>
+          </div>
+          <div class="form-grid">
+            <div>
+              <label>Intervalo do robô em segundos</label>
+              <input id="checkIntervalSeconds" type="number" min="30">
+            </div>
+            <div>
+              <label>Atualização da tela dos fãs em segundos</label>
+              <input id="pollingSeconds" type="number" min="10">
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Cards dos shows</h2>
+            <button id="addShow" type="button">+ Adicionar show</button>
+          </div>
+          <label>Título da seção</label>
+          <input id="showSectionTitle">
+          <div id="showsEditor"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Cards de informações</h2>
+            <button id="addInfoCard" type="button">+ Adicionar card</button>
+          </div>
+          <label>Título da seção</label>
+          <input id="infoSectionTitle">
+          <div id="infoCardsEditor"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Fim do site</h2>
+          <label>Texto do rodapé</label>
+          <input id="footerText">
+        </section>
+
+        <button class="save-button" type="submit">Salvar todas as alterações</button>
+      </form>
+
+      <section class="panel">
+        <h2>Monitor em tempo real</h2>
+        <div id="monitorOverview" class="stats-grid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Estatísticas</h2>
+        <div id="statsDashboard" class="stats-grid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Histórico de mudanças e verificações</h2>
+        <div id="history" class="history-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Últimas verificações</h2>
+        <div id="results"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Logs</h2>
+        <div id="logs" class="logs"></div>
+      </section>
+    </div>
+  </main>
+  <script src="./admin.js?v=alto-trafego-v4"></script>
+</body>
+</html>

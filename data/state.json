@@ -1,0 +1,15 @@
+{
+  "results": {},
+  "history": [],
+  "stats": {
+    "totalChecks": 0,
+    "checksToday": 0,
+    "lastStatsDate": "",
+    "statusChanges": 0,
+    "alertsSent": 0,
+    "failedChecks": 0,
+    "totalDurationMs": 0,
+    "lastCycleAt": null,
+    "lastCycleDurationMs": 0
+  }
+}

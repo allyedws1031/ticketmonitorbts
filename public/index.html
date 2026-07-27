@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>Monitor Ticket BTS</title>
+  <link rel="stylesheet" href="./style.css?v=alto-trafego-v4">
+</head>
+<body>
+  <div id="alertBanner" class="alert-banner" hidden>
+    <div>
+      <strong id="alertTitle">🚨 INGRESSOS DISPONÍVEIS</strong>
+      <p id="alertMessage"></p>
+    </div>
+    <button id="closeAlert" type="button" aria-label="Fechar">×</button>
+  </div>
+
+  <header class="site-header">
+    <button id="enableSound" class="sound-control" type="button">🔔 Ativar alerta</button>
+    <nav id="socialButtons" class="social-links" aria-label="Redes sociais"></nav>
+  </header>
+
+  <section id="hero" class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p id="subtitle" class="hero-kicker">BTS WORLD TOUR ARIRANG - SÃO PAULO</p>
+      <h1 id="title">MONITOR TICKET BTS</h1>
+      <p id="description" class="hero-description"></p>
+      <div class="timer-box">
+        <span>PRÓXIMA VERIFICAÇÃO</span>
+        <strong><b id="seconds">60</b> SEGUNDOS</strong>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="shows-section">
+      <h2 id="showSectionTitle" class="section-title">DIAS DE SHOWS</h2>
+      <div id="shows" class="shows-grid"></div>
+    </section>
+
+    <section class="info-section">
+      <h2 id="infoSectionTitle" class="section-title">INFORMAÇÕES IMPORTANTES</h2>
+      <div id="infoCards" class="info-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footerText">BTS Ticket Monitor Brasil</p>
+  </footer>
+
+  <script>window.MONITOR_CONFIG={apiBaseUrl:""};</script>
+  <script src="./app.js?v=alto-trafego-v4"></script>
+</body>
+</html>
