@@ -2,12 +2,11 @@ services:
   - type: web
     name: bts-ticket-monitor
     runtime: node
-    plan: starter
-
+    plan: free
     buildCommand: npm install
     startCommand: npm start
-
     healthCheckPath: /api/health
+    autoDeploy: true
 
     envVars:
       - key: NODE_VERSION
@@ -22,13 +21,14 @@ services:
       - key: SESSION_SECRET
         generateValue: true
 
-      - key: DATA_DIR
-        value: /var/data
-
       - key: FRONTEND_ORIGIN
         sync: false
 
-    disk:
-      name: monitor-data
-      mountPath: /var/data
-      sizeGB: 1
+      - key: SUPABASE_URL
+        sync: false
+
+      - key: SUPABASE_ANON_KEY
+        sync: false
+
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false

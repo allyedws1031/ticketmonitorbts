@@ -20,6 +20,10 @@ const ADMIN_PASSWORD =
 const SESSION_SECRET =
   process.env.SESSION_SECRET || (IS_PRODUCTION ? "" : "local-secret-change-me");
 const FRONTEND_ORIGIN = String(process.env.FRONTEND_ORIGIN || "").replace(/\/$/, "");
+const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
+const SUPABASE_ANON_KEY = String(process.env.SUPABASE_ANON_KEY || "");
+const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "");
+
 
 if (!ADMIN_PASSWORD || !SESSION_SECRET) {
   throw new Error("Defina ADMIN_PASSWORD e SESSION_SECRET nas variáveis de ambiente.");
@@ -143,8 +147,8 @@ function securityHeaders(contentType, req) {
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
     "Content-Security-Policy":
-      "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; " +
-      "img-src 'self' data: https:; connect-src 'self' " +
+      "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; " +
+      "img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co " +
       (FRONTEND_ORIGIN ? FRONTEND_ORIGIN : "") +
       "; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
     ...(contentType ? { "Content-Type": contentType } : {}),
@@ -274,6 +278,11 @@ function publicAlertEvent() {
 function snapshot() {
   return {
     config: publicConfig(),
+    realtime: {
+      supabaseUrl: SUPABASE_URL,
+      supabaseAnonKey: SUPABASE_ANON_KEY,
+      enabled: Boolean(SUPABASE_URL && SUPABASE_ANON_KEY)
+    },
     results: publicResults(),
     nextCheckAt: monitor.nextCheckAt,
     checking: monitor.running,
@@ -281,15 +290,84 @@ function snapshot() {
   };
 }
 
-function createAlertEvent({ type, title, message }) {
+
+async function supabaseRequest(table, method, body, query = "") {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error("Supabase não configurado no servidor");
+  }
+
+  const response = await fetch(
+    `${SUPABASE_URL}/rest/v1/${table}${query}`,
+    {
+      method,
+      headers: {
+        "apikey": SUPABASE_SERVICE_ROLE_KEY,
+        "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": method === "POST"
+          ? "resolution=merge-duplicates,return=minimal"
+          : "return=minimal"
+      },
+      body: body === undefined ? undefined : JSON.stringify(body)
+    }
+  );
+
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(`Supabase ${response.status}: ${details.slice(0,300)}`);
+  }
+}
+
+async function publishStatusIfChanged(result, previous) {
+  const changed = !previous ||
+    previous.status !== result.status ||
+    previous.label !== result.label ||
+    previous.message !== result.message ||
+    JSON.stringify(previous.offers || []) !== JSON.stringify(result.offers || []);
+
+  if (!changed) return false;
+
+  await supabaseRequest("ticket_status", "POST", [{
+    show_id: result.showId,
+    date_label: result.date || "",
+    status: result.status,
+    label: result.label,
+    message: result.message || "",
+    offers: result.offers || [],
+    checked_at: result.checkedAt,
+    updated_at: new Date().toISOString()
+  }], "?on_conflict=show_id");
+
+  log(`Realtime atualizado para o dia ${result.showId}: ${result.label}.`);
+  return true;
+}
+
+async function publishEvent(event) {
+  await supabaseRequest("monitor_events", "POST", [{
+    event_id: event.id,
+    event_type: event.type,
+    show_id: event.showId || null,
+    title: event.title,
+    message: event.message,
+    created_at: event.createdAt
+  }]);
+}
+
+function createAlertEvent({ type, title, message, showId = null }) {
   eventSequence += 1;
   alertEvent = {
     id: `${Date.now()}-${eventSequence}`,
-    type, title, message,
+    type, title, message, showId,
     createdAt: new Date().toISOString()
   };
   persisted.stats.alertsSent += 1;
   saveStateSoon();
+
+  publishEvent(alertEvent).catch(error => {
+    log(`Não foi possível publicar o alerta no Realtime: ${error.message}`);
+  });
+
+  return alertEvent;
 }
 
 function clearAlertEvent() {
@@ -353,7 +431,16 @@ const monitor = new TicketMonitor({
     log(`Ciclo concluído em ${(cycle.durationMs / 1000).toFixed(1)}s: ${cycle.total - cycle.failures}/${cycle.total} páginas.`);
   },
   onUpdate: result => {
+    const previous = persisted.results[result.showId]
+      ? structuredClone(persisted.results[result.showId])
+      : null;
+
     registerResult(result);
+
+    publishStatusIfChanged(result, previous).catch(error => {
+      log(`Não foi possível atualizar o Realtime: ${error.message}`);
+    });
+
     if (result.shouldAlert) {
       const offerText = result.offers?.length
         ? ` ${result.offers.slice(0, 5)
@@ -362,6 +449,7 @@ const monitor = new TicketMonitor({
         : "";
       createAlertEvent({
         type: "availability",
+        showId: result.showId,
         title: "🚨 INGRESSOS DISPONÍVEIS",
         message: `${result.date}: a página mudou de esgotado para disponível.${offerText}`
       });
@@ -390,7 +478,10 @@ async function handleApi(req, res, pathname) {
     return sendJson(res, 200, {
       ok: true,
       monitorRunning: monitor.running,
-      configuredShows: (config.shows || []).length
+      configuredShows: (config.shows || []).length,
+      deploymentMode: "free",
+      persistentStorage: false,
+      realtimeConfigured: Boolean(SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_SERVICE_ROLE_KEY)
     }, req, "no-store");
   }
 

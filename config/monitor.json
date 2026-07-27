@@ -4,6 +4,7 @@
   "minimumIntervalSeconds": 30,
   "parallelChecks": true,
   "historyLimit": 500,
-  "publicCacheSeconds": 5,
-  "pollingSeconds": 15
+  "publicCacheSeconds": 10,
+  "pollingSeconds": 20,
+  "deploymentMode": "free"
 }

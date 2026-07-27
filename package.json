@@ -1,8 +1,8 @@
 {
   "name": "bts-ticket-monitor-brasil",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "private": true,
-  "description": "Monitor BTS otimizado para alto tráfego, com persistência, histórico e painel operacional",
+  "description": "Monitor BTS com bot único e atualização via Supabase Realtime, sem F5 ou polling público",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
