@@ -654,7 +654,18 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   log(`Servidor iniciado na porta ${PORT}.`);
-  monitor.start().catch(error => log(`Monitor não iniciou: ${error.message}`));
+  async function startMonitorWithRetry() {
+    try {
+      await monitor.start();
+      log("Monitor Playwright iniciado com sucesso.");
+    } catch (error) {
+      log(`Monitor não iniciou: ${error.message}`);
+      log("Nova tentativa de inicialização em 60 segundos.");
+      setTimeout(startMonitorWithRetry, 60000);
+    }
+  }
+
+  startMonitorWithRetry();
 });
 
 async function shutdown() {

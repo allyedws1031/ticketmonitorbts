@@ -1,13 +1,14 @@
 {
   "name": "bts-ticket-monitor-brasil",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "private": true,
   "description": "Monitor BTS com bot único e atualização via Supabase Realtime, sem F5 ou polling público",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "postinstall": "npx playwright install chromium",
-    "check": "node --check server.js && node --check monitor.js && node --check public/app.js && node --check public/admin.js"
+    "postinstall": "playwright install chromium",
+    "check": "node --check server.js && node --check monitor.js && node --check public/app.js && node --check public/admin.js",
+    "install:browser": "playwright install --with-deps chromium"
   },
   "engines": {
     "node": ">=20"
